@@ -20,6 +20,7 @@ Windows Python 2.7 version: https://github.com/AlexeyAB/darknet/blob/fc496d52bf2
 @author: Philip Kahn
 @date: 20180503
 """
+
 from ctypes import *
 import math
 import random
@@ -203,12 +204,6 @@ if os.name == "nt":
             if 'CUDA_VISIBLE_DEVICES' in envKeys:
                 if int(os.environ['CUDA_VISIBLE_DEVICES']) < 0:
                     raise ValueError("ForceCPU")
-            try:
-                global DARKNET_FORCE_CPU
-                if DARKNET_FORCE_CPU:
-                    raise ValueError("ForceCPU")
-            except NameError as cpu_error:
-                print(cpu_error)
         if not os.path.exists(winGPUdll):
             raise ValueError("NoDLL")
         lib = CDLL(winGPUdll, RTLD_GLOBAL)

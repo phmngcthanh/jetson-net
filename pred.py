@@ -1,12 +1,4 @@
 
-import argparse
-import os
-import glob
-import random
-import time
-import cv2
-import numpy as np
-import darknet
 #  MIT License
 #  Copyright (c) 2022. Thanh Pham Ngoc <phmngcthanh <AT>gmail.com>
 #
@@ -21,3 +13,23 @@ import darknet
 # PRED - PREDict Component #
 # 19520958  - Thanh Pham Ngoc #
 # 19520262  - Pham Nguyen Viet Tan #
+
+import argparse
+import os
+import glob
+import random
+import time
+import cv2
+import numpy as np
+
+def ReadCV():
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    if not ret:
+        raise Exception("No frame")
+    else:
+        print(len(frame))
+# press escape to exit
+    cap.release()
+    cv2.destroyAllWindows()
+    return frame
