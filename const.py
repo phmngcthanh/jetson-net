@@ -25,3 +25,10 @@
 PRIVATE_KEY = b"1952095819520262"
 
 PORT = 19520
+
+config_path = "C:/Users/thanh/PycharmProjects/jetsonnet/trained_models/"
+config_file = "yolov7-tiny.cfg"
+data_file = "obj.data"
+weights = "yolov7-tiny_final.weights"
+batch_size = 1
+thresh=0.25
