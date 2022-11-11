@@ -20,13 +20,18 @@
 
 
 #This program was divided into 3 parts: Network communications, A.I Prediction and GPIO communications
-
+import os
 ##### constants #####
 PRIVATE_KEY = b"1952095819520262"
 
 PORT = 19520
-
-config_path = "C:/Users/thanh/PycharmProjects/jetsonnet/trained_models/"
+if os.name == "posix":
+    config_path = "./trained_models/"
+elif os.name == "nt":
+    config_path = "C:/Users/thanh/PycharmProjects/jetsonnet/trained_models/"
+else:
+    print("Unsupported OS")
+    exit
 config_file = "yolov7-tiny.cfg"
 data_file = "obj.data"
 weights = "yolov7-tiny_final.weights"

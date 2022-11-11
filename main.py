@@ -30,7 +30,7 @@ import socket
 
 import signet
 import pred
-
+import time
 serverSocket = socket.socket()
 
 # Bind the tcp socket to an IP and port
@@ -43,6 +43,14 @@ while (True):
     # Keep accepting connections from clients
 
     (clientConnection, clientAddress) = serverSocket.accept()
+    recvdata=clientConnection.recv(1024)[0:1]
+    if recvdata ==b"1":
+        start_time = time.time()
+        clientConnection.send(pred.image_detection()[0][0].encode())
+        clientConnection.send(b'\n')
+        print("Response Elapsed", time.time() - start_time)
+
+    '''
     recvdata=clientConnection.recv(1024)[0:16]
     print(len(recvdata))
     print(type(recvdata))
@@ -56,4 +64,5 @@ while (True):
     serverTimeNow = "%s" % datetime.datetime.now()
 
     clientConnection.send(serverTimeNow.encode())
+    '''
     clientConnection.close();

@@ -23,7 +23,7 @@ import cv2
 import numpy as np
 import darknet
 import const
-
+import time
 #init the model
 '''
 current_path =  os.getcwd()
@@ -35,34 +35,34 @@ ndata_file=  const.config_path + const.data_file
 nweights =  const.config_path + const.weights
 
 
-Dnetwork, Dclass_names, Dclass_colors = darknet.load_network(
+network, class_names, class_colors = darknet.load_network(
     nconfig_file,
     ndata_file,
     nweights,
     batch_size=const.batch_size
 )
-width = darknet.network_width(Dnetwork)
-height = darknet.network_height(Dnetwork)
-darknet_image = darknet.make_image(width, height, 3)
 
-Dthresh=const.thresh
+
+thresh=const.thresh
 def ReadCam():
+    start_time = time.time()
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
     if not ret:
         raise Exception("No frame")
-    else:
-        print(len(frame))
 # press escape to exit
-
     cap.release()
     cv2.destroyAllWindows()
+    print("ReadCam Elapsed",time.time() - start_time )
     return frame
-def image_detection( network, class_names, class_colors, thresh):
+def image_detection():
     # Darknet doesn't accept numpy images.
     # Create one with image we reuse for each detect
-
     image = ReadCam()
+    start_time = time.time()
+    width = darknet.network_width(network)
+    height = darknet.network_height(network)
+    darknet_image = darknet.make_image(width, height, 3)
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image_resized = cv2.resize(image_rgb, (width, height),
                                interpolation=cv2.INTER_LINEAR)
@@ -71,20 +71,6 @@ def image_detection( network, class_names, class_colors, thresh):
     detections = darknet.detect_image(network, class_names, darknet_image, thresh=thresh)
     print("_____---Detect---_____", detections)
     darknet.free_image(darknet_image)
-    image = darknet.draw_boxes(detections, image_resized, class_colors)
+    print("Darknet Elapsed", time.time() - start_time)
     return detections
 
-
-
-
-image = ReadCam()
-image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-image_resized = cv2.resize(image_rgb, (width, height),
-                           interpolation=cv2.INTER_LINEAR)
-
-darknet.copy_image_from_bytes(darknet_image, image_resized.tobytes())
-detections = darknet.detect_image(Dnetwork, Dclass_names, darknet_image, thresh=Dthresh)
-print("_____---Detect---_____", detections)
-darknet.free_image(darknet_image)
-image = darknet.draw_boxes(detections, image_resized, Dclass_colors)
-print(detections)
