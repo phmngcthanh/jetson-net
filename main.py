@@ -26,6 +26,7 @@ import const
 import datetime
 
 import socket
+import traceback
 
 
 import signet
@@ -35,34 +36,38 @@ serverSocket = socket.socket()
 
 # Bind the tcp socket to an IP and port
 
-serverSocket.bind(("127.0.0.1", 19520))
+serverSocket.bind(("0.0.0.0", 19520))
 # Keep listening
 serverSocket.listen()
 
-while (True):
-    # Keep accepting connections from clients
+try:
+    while (True):
+        # Keep accepting connections from clients
 
-    (clientConnection, clientAddress) = serverSocket.accept()
-    recvdata=clientConnection.recv(1024)[0:1]
-    if recvdata ==b"1":
-        start_time = time.time()
-        clientConnection.send(pred.image_detection()[0][0].encode())
-        clientConnection.send(b'\n')
-        print("Response Elapsed", time.time() - start_time)
+        (clientConnection, clientAddress) = serverSocket.accept()
+        recvdata=clientConnection.recv(1024)[0:1]
+        if recvdata ==b"1":
+            start_time = time.time()
+            clientConnection.send(pred.DotheMagic())
+            clientConnection.send(b'\n')
+            print("Response Elapsed", time.time() - start_time)
 
-    '''
-    recvdata=clientConnection.recv(1024)[0:16]
-    print(len(recvdata))
-    print(type(recvdata))
-    tmp = signet.DecryptConn(recvdata)
-    print((recvdata, tmp))
-    a=b"19520958"
-    tmp = signet.EncryptConn(a)
-    clientConnection.send(tmp+b"\n")
-    # Send current server time to the client
-
-    serverTimeNow = "%s" % datetime.datetime.now()
-
-    clientConnection.send(serverTimeNow.encode())
-    '''
-    clientConnection.close();
+        '''
+        recvdata=clientConnection.recv(1024)[0:16]
+        print(len(recvdata))
+        print(type(recvdata))
+        tmp = signet.DecryptConn(recvdata)
+        print((recvdata, tmp))
+        a=b"19520958"
+        tmp = signet.EncryptConn(a)
+        clientConnection.send(tmp+b"\n")
+        # Send current server time to the client
+    
+        serverTimeNow = "%s" % datetime.datetime.now()
+    
+        clientConnection.send(serverTimeNow.encode())
+        '''
+        clientConnection.close();
+except:
+    traceback.print_exc()
+    serverSocket.close();

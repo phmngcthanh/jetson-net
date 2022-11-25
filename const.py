@@ -1,7 +1,4 @@
 
-
-
-
 #  MIT License
 #  Copyright (c) 2022. Thanh Pham Ngoc <phmngcthanh <AT>gmail.com>
 #
@@ -23,7 +20,7 @@
 import os
 ##### constants #####
 PRIVATE_KEY = b"1952095819520262"
-
+Debug = True
 PORT = 19520
 if os.name == "posix":
     config_path = "./trained_models/"

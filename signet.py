@@ -28,6 +28,7 @@ import socket
 import os
 import const
 
+
 def Dict2Bytes(dict_val):
     tmp = dict_val["type"].to_bytes(1, 'big')
     tmp += dict_val["ID"].to_bytes(1, 'big')
