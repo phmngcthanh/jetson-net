@@ -29,3 +29,4 @@ data_file = "obj.data"
 weights = "yolov7-tiny_final.weights"
 batch_size = 1
 thresh=0.25
+NFC=False

@@ -15,7 +15,7 @@
 #This program was divided into 3 parts: Network communications, A.I Prediction and GPIO communications
 
 ##### Network communications#####
-# We relied on Wifi encryption, instead of using our self made encryption#
+# We relied on Wifi encryption, instead of using our self-made encryption#
 import const
 import datetime
 
@@ -24,8 +24,23 @@ import traceback
 
 
 import signet
+
 import pred
 import time
+
+
+def DoTheMagic(content):
+    if (const.Debug):
+        start_time = time.time()
+    Payload = signet.DecryptConn(recvdata)
+    Is_Authorized=pred.DotheImageMagic()
+    signet.ResponseFromRequest(Payload,Is_Authorized)
+    if (const.NFC):
+        pass    #Do Something Here
+    if (const.Debug):
+        print("Response Elapsed", time.time() - start_time)
+    return signet.ResponseFromRequest(Payload, Is_Authorized)
+
 serverSocket = socket.socket()
 
 # Bind the tcp socket to an IP and port
@@ -39,28 +54,27 @@ try:
         # Keep accepting connections from clients
 
         (clientConnection, clientAddress) = serverSocket.accept()
+        '''
         recvdata=clientConnection.recv(1024)[0:1]
         if recvdata ==b"1":
             start_time = time.time()
-            clientConnection.send(pred.DotheMagic())
+            clientConnection.send(DotheMagic())
             clientConnection.send(b'\n')
             print("Response Elapsed", time.time() - start_time)
 
         '''
-        recvdata=clientConnection.recv(1024)[0:16]
-        print(len(recvdata))
-        print(type(recvdata))
-        tmp = signet.DecryptConn(recvdata)
-        print((recvdata, tmp))
-        a=b"19520958"
-        tmp = signet.EncryptConn(a)
-        clientConnection.send(tmp+b"\n")
+        recvdata=clientConnection.recv(1024).split(b'\n')[0]
+        print("recvlen=",len(recvdata))
+        print(("Recv", recvdata))
+        response =DoTheMagic(recvdata)
+        print(("sent", response))
+        clientConnection.send(response+b"\n")
         # Send current server time to the client
     
-        serverTimeNow = "%s" % datetime.datetime.now()
+        #serverTimeNow = "%s" % datetime.datetime.now()
     
-        clientConnection.send(serverTimeNow.encode())
-        '''
+       # clientConnection.send(serverTimeNow.encode())
+
         clientConnection.close();
 except:
     traceback.print_exc()

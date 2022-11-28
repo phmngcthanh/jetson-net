@@ -83,7 +83,7 @@ def image_detection(cammode=0):
     print("Darknet Elapsed", time.time() - start_time)
     return detections
 
-def DotheMagic():
+def DotheImageMagic():
     allow=1 #
     a=image_detection()
     if (len(a) < 1):
@@ -95,17 +95,17 @@ def DotheMagic():
         if (a[i][0]=="without_mask"):
             print("without_mask")
             allow=2
-            return b"without_mask"
+            return allow
         if (a[i][0]=="mask_weared_incorrect"):
             print("mask_weared_incorrect")
             allow = 3
-            return b"mask_weared_incorrect"
+            return allow
     if len(a)==0:
         print("no_one_here")
         allow = 4
-        return b"no_one_here"
+        return allow
     print("with_mask")
-    return b"with_mask"
+    return allow
 
 
 
