@@ -11,7 +11,8 @@
 
 
 
-#This program was divided into 3 parts: Network communications, A.I Prediction and GPIO communications
+#This program was divided into 3 parts:
+# Network communications, A.I Prediction and 8266  communications
 import os
 ##### constants #####
 PRIVATE_KEY = b"1952095819520262"

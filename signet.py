@@ -76,10 +76,12 @@ def EncryptConn(content):
     print("enc1",content)
     print(len(content))
     if len(content) != 8:#checksum
-        content=GenChecksum(content)
+        content+=GenChecksum(content)
     tmp = tmp+bytes(a ^ b for a, b in zip(content, tmp))
     print("enctmp", tmp)
-    tmp2 = base64.b64encode(bytes(a ^ b for a, b in zip(privk, tmp)))
+    tmp1 = bytes(a ^ b for a, b in zip(privk, tmp))
+    print("enctmp1", tmp1)
+    tmp2 = base64.b64encode(tmp1)
     print("enctmp2", tmp2)
     return tmp2
 
@@ -100,25 +102,27 @@ def ResponseFromRequest(Recv, Accept):  # asume we have payload from the client,
         print(len(content))
         print(content)
     if (Accept !=1):
-        Answer == 0
-    Answer = int.to_bytes(Answer,1,'big')
+        Answer = int.to_bytes(0,1,'big')
+    else:
+        Answer = int.to_bytes(1,1,'big')
     if (len(content) == 16):  # case we already in base64 not decrypted
         content = DecryptConn(content)
         content = content[8:16]
     if(const.Debug):
         print(len(content))
         print(content)
-    tmp=content[0].to_bytes(1,'big')
-    tmp+=content[1].to_bytes(1,'big')
-    tmp+= Answer
-    tmp+= Answer
-    tmp+=Answer
-    tmp+= Answer
+    tmp=b'\x02' #response Auth
+    tmp+=b'\x00'#server
+    tmp += Answer
+    tmp += Answer
+    tmp += Answer
+    tmp += Answer
     if (content[6]==0): # case  ultrasonic
-        tmp+= content[2].to_bytes(1,'big') # nonce
+        tmp+= content[2].to_bytes(1,'little') # nonce
     else:
-        tmp+=content[6].to_bytes(1,'big') # if other authenticate measure
-
+        tmp+=content[6].to_bytes(1,'little') # if other authenticate measure
+    print("beforeEnc",int.from_bytes(tmp,'little'))
+    print(Bytes2Dict(tmp))
     return EncryptConn(tmp)
 
 

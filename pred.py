@@ -9,38 +9,27 @@
 # 19520958  - Thanh Pham Ngoc #
 # 19520262  - Pham Nguyen Viet Tan #
 
-import argparse
-import os
-import glob
-import random
-import time
+
 import cv2
-import numpy as np
 import darknet
 import const
 import time
 #init the model
-'''
-current_path =  os.getcwd()
-nconfig_file = os.path.join(current_path, const.config_path, const.config_file)
-ndata_file= os.path.join(current_path, const.config_path, const.data_file)
-nweights = os.path.join(current_path, const.config_path, const.weights)'''
 nconfig_file =  const.config_path + const.config_file
 ndata_file=  const.config_path + const.data_file
 nweights =  const.config_path + const.weights
-
-cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-cap.set(cv2.CAP_PROP_EXPOSURE, 0.75)
-
+thresh=const.thresh
 network, class_names, class_colors = darknet.load_network(
     nconfig_file,
     ndata_file,
     nweights,
     batch_size=const.batch_size
 )
+#init the cam
+cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+cap.set(cv2.CAP_PROP_EXPOSURE, 0.75)
 #camera should be ready
 time.sleep(3)
 ret, frame = cap.read()
@@ -49,7 +38,7 @@ ret, frame = cap.read()
 #timestr = "START"+time.strftime("%Y%m%d-%H%M%S") + ".jpg"
 #cv2.imwrite(timestr, frame)
 
-thresh=const.thresh
+
 def ReadCam(mode):
     start_time = time.time()
     ret, frame = cap.read()
