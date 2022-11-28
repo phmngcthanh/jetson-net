@@ -41,39 +41,18 @@ def DoTheMagic(content):
     return signet.ResponseFromRequest(Payload, Is_Authorized)
 
 serverSocket = socket.socket()
-
-# Bind the tcp socket to an IP and port
-
-serverSocket.bind(("0.0.0.0", 19520))
-# Keep listening
+serverSocket.bind(("0.0.0.0", const.PORT))
 serverSocket.listen()
 
 try:
     while (True):
-        # Keep accepting connections from clients
-
         (clientConnection, clientAddress) = serverSocket.accept()
-        '''
-        recvdata=clientConnection.recv(1024)[0:1]
-        if recvdata ==b"1":
-            start_time = time.time()
-            clientConnection.send(DotheMagic())
-            clientConnection.send(b'\n')
-            print("Response Elapsed", time.time() - start_time)
-
-        '''
         recvdata=clientConnection.recv(1024).split(b'\n')[0]
         print("recvlen=",len(recvdata))
         print(("Recv", recvdata))
         response =DoTheMagic(recvdata)
         print(("sent", response))
         clientConnection.send(response+b"\n")
-        # Send current server time to the client
-    
-        #serverTimeNow = "%s" % datetime.datetime.now()
-    
-       # clientConnection.send(serverTimeNow.encode())
-
         clientConnection.close();
 except:
     traceback.print_exc()

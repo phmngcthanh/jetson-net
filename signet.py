@@ -109,17 +109,3 @@ def ResponseFromRequest(Recv, Accept):  # asume we have payload from the client,
         tmp +=content[6].to_bytes(1,'little') # if other authenticate measure
     return EncryptConn(tmp)
 
-
-
-
-def ssend(s, content):
-    s.sendall(EncryptConn(content))
-    s.shutdown(socket.SHUT_WR)
-    while 1:
-        data = s.recv(1024)
-        if len(data) == 0:
-            break
-        print("Received:", repr(data))
-    print("Connection closed.")
-    s.close()
-
