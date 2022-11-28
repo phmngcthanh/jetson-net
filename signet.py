@@ -36,13 +36,10 @@ def  Authen_RADIUS(val):
     Somehow=0
     Prototype=1
     return(True)
-
-
 def Prototype_NFC(NFC_ID):
     if Authen_RADIUS(NFC_ID):
         return True
     return False
-
 
 def Dict2Bytes(dict_val):
     tmp = dict_val["type"].to_bytes(1, 'big')
@@ -55,15 +52,12 @@ def Bytes2Dict(content):
     tmp = {"type": content[0], "ID": int.from_bytes(content[1:2],'big'), "response": content[2:7]}
     return tmp
 
-
 def CheckChecksum(content):
     if len(content) != 8:
         raise Exception("invalid content for check-checksum")
     if content[7] ==content[1]^content[2]^content[3]^content[4]^content[5]^content[6]^content[0]:
         return 1
     return 0
-
-
 
 def GenChecksum(content):
     return (content[1]^content[2]^content[3]^content[4]^content[5]^content[6]^content[0]).to_bytes(1,'big')
@@ -97,32 +91,22 @@ def DecryptConn(content):
 
 def ResponseFromRequest(Recv, Accept):  # asume we have payload from the client, we modify it
     Answer = Accept
-    content= Recv
-    if(const.Debug):
-        print(len(content))
-        print(content)
+    content = Recv
     if (Accept !=1):
         Answer = int.to_bytes(0,1,'big')
     else:
         Answer = int.to_bytes(1,1,'big')
-    if (len(content) == 16):  # case we already in base64 not decrypted
+    if (len(content) == 16):  # case we not decrypted
         content = DecryptConn(content)
         content = content[8:16]
-    if(const.Debug):
-        print(len(content))
-        print(content)
     tmp=b'\x02' #response Auth
     tmp+=b'\x00'#server
-    tmp += Answer
-    tmp += Answer
-    tmp += Answer
-    tmp += Answer
+    for i in range(4):
+        tmp += Answer
     if (content[6]==0): # case  ultrasonic
-        tmp+= content[2].to_bytes(1,'little') # nonce
+        tmp += content[2].to_bytes(1,'little') # nonce
     else:
-        tmp+=content[6].to_bytes(1,'little') # if other authenticate measure
-    print("beforeEnc",int.from_bytes(tmp,'little'))
-    print(Bytes2Dict(tmp))
+        tmp +=content[6].to_bytes(1,'little') # if other authenticate measure
     return EncryptConn(tmp)
 
 

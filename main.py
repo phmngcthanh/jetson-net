@@ -34,7 +34,6 @@ def DoTheMagic(content):
         start_time = time.time()
     Payload = signet.DecryptConn(recvdata)
     Is_Authorized=pred.DotheImageMagic()
-    signet.ResponseFromRequest(Payload,Is_Authorized)
     if (const.NFC):
         pass    #Do Something Here
     if (const.Debug):

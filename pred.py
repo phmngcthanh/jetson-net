@@ -54,8 +54,6 @@ def ReadCam(mode):
     print("ReadCam Elapsed",time.time() - start_time )
     return frame
 def image_detection(cammode=0):
-    # Darknet doesn't accept numpy images.
-    # Create one with image we reuse for each detect
     image = ReadCam(cammode)
     start_time = time.time()
     width = darknet.network_width(network)
