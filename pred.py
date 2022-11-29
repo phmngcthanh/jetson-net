@@ -48,7 +48,7 @@ def ReadCam(mode):
         ret, frame = cap.read()
     if not ret:
         raise Exception("No frame")
-    timestr = time.strftime("%Y%m%d-%H%M%S") + ".jpg"
+    timestr = time.strftime("%Y%m%d-%H%M%S-raw") + ".jpg"
     cv2.imwrite(timestr, frame)
     #cap.release()
     print("ReadCam Elapsed",time.time() - start_time )
@@ -65,8 +65,11 @@ def image_detection(cammode=0):
 
     darknet.copy_image_from_bytes(darknet_image, image_resized.tobytes())
     detections = darknet.detect_image(network, class_names, darknet_image, thresh=thresh)
+    image = darknet.draw_boxes(detections, image_resized, class_colors)
     print("_____---Detect---_____", detections)
     darknet.free_image(darknet_image)
+    timestr = time.strftime("%Y%m%d-%H%M%S-detection") + ".jpg"
+    cv2.imwrite(timestr, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     print("Darknet Elapsed", time.time() - start_time)
     return detections
 

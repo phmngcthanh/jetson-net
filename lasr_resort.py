@@ -17,7 +17,7 @@ import time
 ##### constants #####
 PRIVATE_KEY = b"1952095819520262"
 Debug = True
-IP="127.0.0.1"
+IP="192.168.55.1"
 PORT = 19520
 
 # Crypto Functions
@@ -137,7 +137,7 @@ def Run():
                 ControlLED(3)
             print("Takes approx.", time.time() - start_time," seconds to accomplish")
 
-
+Run()
 
 
 
