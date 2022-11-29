@@ -1,6 +1,8 @@
-// Copyright (c) 2022. Thanh Pham Ngoc <phmngcthanh <AT>gmail.com>
+//  BSD 3-clause License
+//  Copyright (c) 2022. Thanh Pham Ngoc <phmngcthanh <AT>gmail.com>
 //  All rights reserved.
-//  A copy of the license can be found at the LICENSE file, or the link https://github.com/phmngcthanh/jetson-net/blob/master/LICENSE
+//  A copy of the license can be found at the LICENSE file, or the link
+//  https://github.com/phmngcthanh/jetson-net/blob/master/LICENSE
 
 
 #include "Base64.h"

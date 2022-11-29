@@ -1,6 +1,8 @@
+#  BSD 3-clause License
 #  Copyright (c) 2022. Thanh Pham Ngoc <phmngcthanh <AT>gmail.com>
 #  All rights reserved.
-#  A copy of the license can be found at the LICENSE file, or the link https://github.com/phmngcthanh/jetson-net/blob/master/LICENSE
+#  A copy of the license can be found at the LICENSE file, or the link
+#  https://github.com/phmngcthanh/jetson-net/blob/master/LICENSE
 
 
 # Jetson Nano SmartGate for Wens course@UIT - guided by Assoc.Prof. Le Trung Quan#
@@ -14,7 +16,8 @@
 # 1.1
 # 2.
 # Packet include 16 bytes
-# To avoid cryptanalyst from using same private key, we use a random IV and xor with the payload. Then we XOR them all with private key
+# To avoid cryptanalyst from using same private key, we use a random IV and xor with the payload.
+# Then we XOR them all with private key
 # |IV ( 8 bytes random)| Type of Packet (1 bytes)| ID of sent packet device (essp8266) (1bytes - 254 devices, server ID =0)|
 # | content (5 bytes) | checksum ( exclude the IV, by XORed them byte-by-byte)|
 #type of Packet: 1: Request Auth; 2: ResponseAuth
